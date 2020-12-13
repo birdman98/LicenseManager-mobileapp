@@ -1,0 +1,10 @@
+{
+  "name": "License-Manager",
+  "displayName": "License Manager",
+  "expo": {
+    "name": "License-Manager",
+    "slug": "License-Manager",
+    "version": "1.0.0",
+    "assetBundlePatterns": ["**/*"]
+  }
+}
