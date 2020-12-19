@@ -6,7 +6,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import Spinner from '../components/spinner';
-
+import LoginView from '../views/loginView';
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
@@ -19,7 +19,7 @@ const RoutesProtector = ({ isAuthenticated }) => {
     </Tab.Navigator>
   ) : (
     <Stack.Navigator>
-      <Stack.Screen name="Log in" component={Spinner} />
+      <Stack.Screen name="Log in" component={LoginView} />
     </Stack.Navigator>
   );
 };
