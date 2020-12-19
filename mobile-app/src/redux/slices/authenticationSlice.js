@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios, { setAxiosAuthToken } from '../../common/axios';
+import { persistToken, purgePersistedToken } from '../../common/authTokenUtils';
 
 const initialState = {
   isAuthenticated: false,
@@ -17,6 +18,18 @@ const initialState = {
     privileges: [],
   },
 };
+
+const rehydrateAuthentication = createAsyncThunk(
+  'user/restore',
+  (token, { rejectWithValue }) => {
+    return axios
+      .get('/api/auth/token', {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then(({ data }) => ({ data, token }))
+      .catch(() => rejectWithValue(''));
+  }
+);
 
 const authenticateUser = createAsyncThunk(
   'user/authenticate',
@@ -42,6 +55,14 @@ const logoutUser = createAsyncThunk('user/logout', (_, { rejectWithValue }) => {
 const authenticationSlice = createSlice({
   name: 'authentication',
   initialState,
+  reducers: {
+    abortRehydration: (state) => {
+      return {
+        ...state,
+        rehydrationInProgress: false,
+      };
+    },
+  },
   extraReducers: {
     [authenticateUser.pending]: (state) => {
       return {
@@ -52,6 +73,7 @@ const authenticationSlice = createSlice({
     [authenticateUser.fulfilled]: (state, { payload }) => {
       const { authorizationToken } = payload;
       setAxiosAuthToken(authorizationToken);
+      persistToken(authorizationToken);
       return {
         ...state,
         isAuthenticationInProgress: false,
@@ -66,6 +88,35 @@ const authenticationSlice = createSlice({
         authenticationMessage: payload.message || payload,
       };
     },
+    [rehydrateAuthentication.pending]: (state) => {
+      return {
+        ...state,
+        rehydrationInProgress: true,
+      };
+    },
+    [rehydrateAuthentication.fulfilled]: (
+      state,
+      { payload: { data, token } }
+    ) => {
+      setAxiosAuthToken(token);
+      return {
+        ...state,
+        isAuthenticated: true,
+        authorizationToken: token,
+        rehydrationInProgress: false,
+        user: {
+          ...data,
+        },
+      };
+    },
+    [rehydrateAuthentication.rejected]: (state) => {
+      return {
+        ...state,
+        isAuthenticated: false,
+        authorizationToken: '',
+        rehydrationInProgress: false,
+      };
+    },
     [logoutUser.pending]: (state) => {
       return {
         ...state,
@@ -73,6 +124,7 @@ const authenticationSlice = createSlice({
       };
     },
     [logoutUser.fulfilled]: (state, { payload: { message } }) => {
+      purgePersistedToken();
       return {
         ...state,
         isLogoutInProgress: false,
@@ -89,6 +141,7 @@ const authenticationSlice = createSlice({
       };
     },
     [logoutUser.rejected]: (state) => {
+      purgePersistedToken();
       return {
         ...state,
         isLogoutInProgress: false,
@@ -108,5 +161,12 @@ const authenticationSlice = createSlice({
 });
 
 const { reducer: authenticationReducer } = authenticationSlice;
+const { abortRehydration } = authenticationSlice.actions;
 
-export { authenticationReducer, authenticateUser, logoutUser };
+export {
+  authenticationReducer,
+  authenticateUser,
+  rehydrateAuthentication,
+  logoutUser,
+  abortRehydration,
+};
