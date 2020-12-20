@@ -5,6 +5,9 @@
     "name": "License-Manager",
     "slug": "License-Manager",
     "version": "1.0.0",
-    "assetBundlePatterns": ["**/*"]
+    "assetBundlePatterns": ["**/*"],
+    "android": {
+      "package": "io.licensemanager.mobileapp"
+    }
   }
 }

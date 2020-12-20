@@ -16,5 +16,7 @@
     "sourceType": "module"
   },
   "plugins": ["react", "react-native"],
-  "rules": {}
+  "rules": {
+    "react/display-name": false
+  }
 }
