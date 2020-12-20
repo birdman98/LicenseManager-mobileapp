@@ -8,11 +8,13 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { authenticateUser } from '../redux/slices/authenticationSlice';
 import logo from '../icon.png';
+import { THEMES } from '../common/themeUtils';
 
 const LoginPage = ({
   authenticateUser,
   authenticationErrorMsg,
   isAuthenticationInProgress,
+  selectedTheme,
 }) => {
   const [credentials, setCredentials] = useState({
     username: '',
@@ -54,7 +56,13 @@ const LoginPage = ({
       )}
       <Input
         placeholder="Username"
-        leftIcon={<Icon name="user" size={24} color="black" />}
+        leftIcon={
+          <Icon
+            name="user"
+            size={24}
+            color={selectedTheme === THEMES.dark ? 'white' : 'black'}
+          />
+        }
         onChangeText={(text) => formHandler('username', text)}
         autoCompleteType="username"
         textContentType="username"
@@ -63,7 +71,13 @@ const LoginPage = ({
       />
       <Input
         placeholder="Password"
-        leftIcon={<Icon name="lock" size={24} color="black" />}
+        leftIcon={
+          <Icon
+            name="lock"
+            size={24}
+            color={selectedTheme === THEMES.dark ? 'white' : 'black'}
+          />
+        }
         onChangeText={(text) => formHandler('password', text)}
         autoCompleteType="password"
         textContentType="password"
@@ -104,11 +118,13 @@ LoginPage.propTypes = {
   authenticateUser: PropTypes.func.isRequired,
   authenticationErrorMsg: PropTypes.string.isRequired,
   isAuthenticationInProgress: PropTypes.bool.isRequired,
+  selectedTheme: PropTypes.string.isRequired,
 };
 
-const mapStateToProps = ({ authentication }) => ({
+const mapStateToProps = ({ authentication, app }) => ({
   authenticationErrorMsg: authentication.authenticationErrorMsg,
   isAuthenticationInProgress: authentication.isAuthenticationInProgress,
+  selectedTheme: app.selectedTheme,
 });
 
 const mapDispatchToProps = (dispatch) => ({
