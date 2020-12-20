@@ -9,6 +9,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Spinner from '../components/spinner';
 import LoginView from '../views/loginView';
 import LicensesListView from '../views/licensesListView';
+import CustomersListView from '../views/customersListView';
 import SettingsView from '../views/settingsView';
 import {
   abortRehydration,
@@ -49,7 +50,7 @@ const RoutesProtector = ({
         />
         <Tab.Screen
           name="Customers"
-          component={Spinner}
+          component={CustomersListView}
           options={{
             tabBarIcon: ({ color, size }) => (
               <Icon name="users" color={color} size={size} />
