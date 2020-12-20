@@ -1,16 +1,35 @@
 import React from 'react';
-import { View, ActivityIndicator } from 'react-native';
+import { View, ActivityIndicator, StyleSheet } from 'react-native';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
-const Spinner = () => {
+import { THEMES } from '../common/themeUtils';
+
+const Spinner = ({ selectedTheme }) => {
   return (
     <View>
       <ActivityIndicator
         size="large"
-        style={{ paddingTop: '50%', alignSelf: 'center' }}
-        color="#000000"
+        color={selectedTheme === THEMES.dark ? '#FFFFFF' : '#000000'}
+        style={style.spinner}
       />
     </View>
   );
 };
 
-export default Spinner;
+const style = StyleSheet.create({
+  spinner: {
+    paddingTop: '50%',
+    alignSelf: 'center',
+  },
+});
+
+Spinner.propTypes = {
+  selectedTheme: PropTypes.string.isRequired,
+};
+
+const mapStateToProps = ({ app }) => ({
+  selectedTheme: app.selectedTheme,
+});
+
+export default connect(mapStateToProps)(Spinner);
