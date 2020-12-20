@@ -8,6 +8,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import Spinner from '../components/spinner';
 import LoginView from '../views/loginView';
+import LicensesListView from '../views/licensesListView';
 import {
   abortRehydration,
   rehydrateAuthentication,
@@ -37,7 +38,7 @@ const RoutesProtector = ({
       <Tab.Navigator>
         <Tab.Screen
           name="Licenses"
-          component={Spinner}
+          component={LicensesListView}
           options={{
             tabBarIcon: ({ color, size }) => (
               <Icon name="key" color={color} size={size} />
