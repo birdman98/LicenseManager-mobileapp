@@ -9,6 +9,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Spinner from '../components/spinner';
 import LoginView from '../views/loginView';
 import LicensesListView from '../views/licensesListView';
+import SettingsView from '../views/settingsView';
 import {
   abortRehydration,
   rehydrateAuthentication,
@@ -20,6 +21,7 @@ const Stack = createStackNavigator();
 
 const RoutesProtector = ({
   rehydrationInProgress,
+  isSelectingThemePending,
   rehydrateAuthentication,
   abortRehydration,
   isAuthenticated,
@@ -33,7 +35,7 @@ const RoutesProtector = ({
     token !== '' ? rehydrateAuthentication(token) : abortRehydration();
   };
 
-  if (!rehydrationInProgress) {
+  if (!rehydrationInProgress && !isSelectingThemePending) {
     return isAuthenticated ? (
       <Tab.Navigator>
         <Tab.Screen
@@ -56,7 +58,7 @@ const RoutesProtector = ({
         />
         <Tab.Screen
           name="Settings"
-          component={Spinner}
+          component={SettingsView}
           options={{
             tabBarIcon: ({ color, size }) => (
               <Icon name="gears" color={color} size={size} />
@@ -76,13 +78,15 @@ const RoutesProtector = ({
 
 RoutesProtector.propTypes = {
   rehydrationInProgress: PropTypes.bool.isRequired,
+  isSelectingThemePending: PropTypes.bool.isRequired,
   rehydrateAuthentication: PropTypes.func.isRequired,
   abortRehydration: PropTypes.func.isRequired,
   isAuthenticated: PropTypes.bool.isRequired,
 };
 
-const mapStateToProps = ({ authentication }) => ({
+const mapStateToProps = ({ authentication, app }) => ({
   rehydrationInProgress: authentication.rehydrationInProgress,
+  isSelectingThemePending: app.isSelectingThemePending,
   isAuthenticated: authentication.isAuthenticated,
 });
 

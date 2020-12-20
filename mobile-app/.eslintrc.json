@@ -17,6 +17,6 @@
   },
   "plugins": ["react", "react-native"],
   "rules": {
-    "react/display-name": false
+    "react/display-name": 0
   }
 }
