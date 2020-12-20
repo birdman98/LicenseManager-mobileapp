@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
+import PropTypes from 'prop-types';
 import axios from '../common/axios';
 
 import { Badge, Button, ListItem, Overlay, Text } from 'react-native-elements';
 import { Toast } from 'native-base';
+import { connect } from 'react-redux';
 
-const LicensesListView = () => {
+import { THEMES } from '../common/themeUtils';
+
+const LicensesListView = ({ selectedTheme }) => {
   const [licensesList, setLicensesList] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [licenseToShow, setLicenseToShow] = useState({});
@@ -51,7 +55,9 @@ const LicensesListView = () => {
 
     return (
       <Overlay
-        overlayStyle={style.overlay}
+        overlayStyle={
+          selectedTheme === THEMES.dark ? style.overlayDark : style.overlayLight
+        }
         isVisible
         onBackdropPress={closeLicenseDetailsModal}
       >
@@ -99,9 +105,15 @@ const LicensesListView = () => {
 };
 
 const style = StyleSheet.create({
-  overlay: {
+  overlayLight: {
     minHeight: '40%',
     maxHeight: '80%',
+    backgroundColor: '#FFFFFF',
+  },
+  overlayDark: {
+    minHeight: '40%',
+    maxHeight: '80%',
+    backgroundColor: '#000000',
   },
   view: {
     padding: 10,
@@ -119,4 +131,12 @@ const style = StyleSheet.create({
   },
 });
 
-export default LicensesListView;
+LicensesListView.propTypes = {
+  selectedTheme: PropTypes.string.isRequired,
+};
+
+const mapStateToProps = ({ app }) => ({
+  selectedTheme: app.selectedTheme,
+});
+
+export default connect(mapStateToProps)(LicensesListView);
