@@ -96,7 +96,13 @@ const LicensesListView = ({ selectedTheme }) => {
           />
           <ListItem.Content>
             <ListItem.Title>{license.name}</ListItem.Title>
-            <ListItem.Subtitle>{license.customer.name}</ListItem.Subtitle>
+            <ListItem.Subtitle
+              style={{
+                color: selectedTheme === THEMES.dark ? '#CCCBC8' : '#5E5D5B',
+              }}
+            >
+              {license.customer.name}
+            </ListItem.Subtitle>
           </ListItem.Content>
         </ListItem>
       ))}
