@@ -41,6 +41,7 @@ const CustomersListView = ({ selectedTheme }) => {
 
   const closeCustomerDetailsModal = () => {
     setCustomerToShow({});
+    setCustomerStats({});
     setIsModalVisible(false);
   };
 
