@@ -1,4 +1,4 @@
-# LicenseManager-mobileapp
+# LicenseManager-mobileapp ![GitHub](https://img.shields.io/github/license/birdman98/LicenseManager-mobileapp) ![GitHub release (latest by date)](https://img.shields.io/github/v/release/birdman98/LicenseManager-mobileapp) ![GitHub all releases](https://img.shields.io/github/downloads/birdman98/LicenseManager-mobileapp/total)
 
 Engineer's Thesis mobile application project repository
 
